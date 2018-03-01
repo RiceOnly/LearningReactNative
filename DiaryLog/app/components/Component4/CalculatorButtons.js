@@ -5,28 +5,51 @@ export default class CalculatorButtons extends Component{
     constructor(props){
         super(props);
         this.state = {
-            leftOperand: ''
+            expression: ''
         }
     }
-
-    onPressButton(operand){
-        this.setState({
-            leftOperand: operand
-        })
-        if(operand != '+'){
-            this.props.leftOperand(operand)
-        }else{
-            var operator = this.state.leftOperand
-            operator = operator + operand
+    
+    onPressButton(buttonClicked){
+        var lngthOfExpression = this.state.expression.length
+        {/*Appends the value clicked to the expression if it is not an equal operator*/}
+        if (buttonClicked != '=') {
+            var tempExpression = this.state.expression;
+            var newExpression = tempExpression + buttonClicked;
             this.setState({
-                leftOperand: operator
+                expression: newExpression
             })
-            this.props.leftOperand(operator)
-
+            this.props.expression(newExpression)
+        }else {
+            {/*It is an equal operator, do the calculation using operator precedence*/}
+            var calculate = this.state.expression;
+            {/*Look for multiplication or division and calculate that first*/}
+            {/*7+7*/}
+            while (calculate.indexOf('+')) {
+                console.log('Do we get in here')
+                var multiplyIndex = calculate.indexOf('+');
+                {/*Do the calculation*/}
+                var leftOperand = calculate[multiplyIndex - 1] ;
+                var rightOperand = calculate[multiplyIndex + 1];
+                var multipliedExpression =  Number(leftOperand) + Number(rightOperand)
+                {/*Put new expression back in the old expression while removing the calculated values*/}
+                {/*7+7*/} 
+                var rightExpression = calculate.slice(multiplyIndex+2);
+                console.log('This is the rightExp: ' + rightExpression);
+                var leftExpression = calculate.slice(0, multiplyIndex-1);
+                console.log('This is the leftExp: ' + leftExpression);
+                var newExpression = leftExpression + String(multipliedExpression) + rightExpression;
+                calculate = newExpression;
+                console.log(calculate)
+                break;
+            }
+            this.setState({
+                expression: newExpression
+            })
+            this.props.expression(newExpression)
         }
     }
     render(){
-        console.log('This the the state of the left operand: ' + this.state.leftOperand)
+        console.log('This the the state of the left operand: ' + this.state.expression)
         return(
             <View style={styles.calculatorContainter}>
                 <View style={styles.firstRowContainer}>
@@ -38,6 +61,9 @@ export default class CalculatorButtons extends Component{
                     </View>
                     <View style={{height: 50, width: 70, padding: 6, backgroundColor: 'grey'}}>       
                         <Button title='9' color='silver' onPress={() => this.onPressButton(9)}/>
+                    </View>
+                    <View style={{height: 50, width: 70, padding: 6, backgroundColor: 'grey'}}>
+                        <Button title='=' color='silver' onPress={() => this.onPressButton('=')}/>
                     </View>
                 </View>
                 

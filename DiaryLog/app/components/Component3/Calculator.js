@@ -12,7 +12,7 @@ export default class Calculate extends Component{
         this.state = {
             operator: '',
             operand: 0,
-            leftOperand: '',
+            expression: '',
             RightOperand: 0,
             count: 0
         };
@@ -40,11 +40,11 @@ export default class Calculate extends Component{
 
                 <View style={{backgroundColor: 'pink', height: 100}}>
                     <Text style={{textAlign: 'center', fontSize: 50}}>
-                        {this.state.leftOperand}
+                        {this.state.expression}
                     </Text>
                 </View>
                 <View>
-                    <CalculatorButtons leftOperand={(Operand) => this.setState({leftOperand: Operand})}/>
+                    <CalculatorButtons expression={(tmpExpression) => this.setState({expression: tmpExpression})}/>
                 </View>
                 
                 
