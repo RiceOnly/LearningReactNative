@@ -22,7 +22,7 @@ export default class Calculate extends Component{
     decreaseCount = (downcount) => this.setState({count: downcount});
 
     render() {
-        console.log('This is in the calculator component, the count here is: ', this.state.count)
+        {/*console.log('This is in the calculator component, the count here is: ', this.state.count)*/}
         return(
             <View style={{flexDirection: 'column'}}>
                 {/* <Display leftOperand='' operator='' rightOperand='' ans=''/> */}

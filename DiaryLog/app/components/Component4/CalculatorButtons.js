@@ -22,25 +22,47 @@ export default class CalculatorButtons extends Component{
         }else {
             {/*It is an equal operator, do the calculation using operator precedence*/}
             var calculate = this.state.expression;
-            {/*Look for multiplication or division and calculate that first*/}
-            {/*7+7*/}
-            while (calculate.indexOf('+')) {
+            {/*Loop through to look for addition and calculate that first*/}
+            {/*77+7*/}
+            while (calculate.indexOf('+') != -1) {
                 console.log('Do we get in here')
-                var multiplyIndex = calculate.indexOf('+');
+                var additionIndex = calculate.indexOf('+');
+                var leftOperand = '';
+                var leftExpression = '';
+                var rightOperand = '';
+                var rightExpression = '';
+                console.log('addition index is:' + String(additionIndex));
                 {/*Do the calculation*/}
-                var leftOperand = calculate[multiplyIndex - 1] ;
-                var rightOperand = calculate[multiplyIndex + 1];
-                var multipliedExpression =  Number(leftOperand) + Number(rightOperand)
+                {/*Check if it's in the 1's 10's.. value*/}
+                for (i = 1; i <= additionIndex; i++){
+                    if (calculate[additionIndex - i] != '+' || calculate[additionIndex - i] != ''){
+
+                        leftOperand = calculate[additionIndex - i] + leftOperand ;
+                        console.log('LeftOperand: ' + String(leftOperand));
+
+                        leftExpression = calculate.slice(0, additionIndex - i);
+                        console.log('This is the leftExp: ' + leftExpression);
+                    }
+                }
+
+                for (i = 1; i <= additionIndex; i++){
+                    if (calculate[additionIndex + i] != '+' || calculate[additionIndex + i] != ''){
+
+                        rightOperand = calculate[additionIndex + i] + rightOperand ;
+                        console.log('rightOperand: ' + String(rightOperand));
+
+                        rightExpression = calculate.slice(additionIndex + i + 1);
+                        console.log('This is the rightExp: ' + rightExpression);
+                    }
+                }
+
+                var addedExpression =  Number(leftOperand) + Number(rightOperand)
+
                 {/*Put new expression back in the old expression while removing the calculated values*/}
-                {/*7+7*/} 
-                var rightExpression = calculate.slice(multiplyIndex+2);
-                console.log('This is the rightExp: ' + rightExpression);
-                var leftExpression = calculate.slice(0, multiplyIndex-1);
-                console.log('This is the leftExp: ' + leftExpression);
-                var newExpression = leftExpression + String(multipliedExpression) + rightExpression;
+                {/*77+77*/} 
+                var newExpression = leftExpression + String(addedExpression) + rightExpression;
                 calculate = newExpression;
-                console.log(calculate)
-                break;
+                console.log('This should be a -1: ' + String(calculate.indexOf('+')));  
             }
             this.setState({
                 expression: newExpression
@@ -49,7 +71,7 @@ export default class CalculatorButtons extends Component{
         }
     }
     render(){
-        console.log('This the the state of the left operand: ' + this.state.expression)
+        {/*console.log('This the the state of the left operand: ' + this.state.expression)*/}
         return(
             <View style={styles.calculatorContainter}>
                 <View style={styles.firstRowContainer}>
@@ -69,13 +91,13 @@ export default class CalculatorButtons extends Component{
                 
                 <View style={styles.secondRowContainer}>
                     <View style={{height: 50, width: 70, padding: 6, backgroundColor: 'grey'}}>       
-                        <Button title='4' color='silver'/>
+                        <Button title='4' color='silver' onPress={() => this.onPressButton(4)}/>
                     </View>
                     <View style={{height: 50, width: 70, padding: 6, backgroundColor: 'grey'}}>       
-                        <Button title='5' color='silver'/>
+                        <Button title='5' color='silver' onPress={() => this.onPressButton(5)}/>
                     </View>
                     <View style={{height: 50, width: 70, padding: 6, backgroundColor: 'grey'}}>       
-                        <Button title='6' color='silver'/>
+                        <Button title='6' color='silver' onPress={() => this.onPressButton(6)}/>
                     </View>
                     <View style={{height: 50, width: 70, padding: 6, backgroundColor: 'grey'}}>
                         <Button title='-' color='silver' onPress={() => this.onPressButton('-')}/>
@@ -84,13 +106,13 @@ export default class CalculatorButtons extends Component{
 
                 <View style={styles.thirdRowContainer}>
                     <View style={{height: 50, width: 70, padding: 6, backgroundColor: 'grey'}}>       
-                        <Button title='1' color='silver'/>
+                        <Button title='1' color='silver' onPress={() => this.onPressButton(1)}/>
                     </View>
                     <View style={{height: 50, width: 70, padding: 6, backgroundColor: 'grey'}}>       
-                        <Button title='2' color='silver'/>
+                        <Button title='2' color='silver' onPress={() => this.onPressButton(2)}/>
                     </View>
                     <View style={{height: 50, width: 70, padding: 6, backgroundColor: 'grey'}}>       
-                        <Button title='3' color='silver'/>
+                        <Button title='3' color='silver' onPress={() => this.onPressButton(3)}/>
                     </View>
                     <View style={{height: 50, width: 70, padding: 6, backgroundColor: 'grey'}}>       
                         <Button title='+' color='silver' onPress={() => this.onPressButton('+')}/>
